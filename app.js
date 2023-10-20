@@ -1,6 +1,6 @@
 import express, { json } from "express";
 import { config } from 'dotenv';
-import got from 'got';
+import fetch from "node-fetch";
 import fs from 'fs';
 
 config();
@@ -32,22 +32,28 @@ server.post('/auth', async(req, res) => {
     },
   });
 
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
+      'Content-Type': 'application/json'
+    },
+    body: raw,
+    redirect: 'follow'
+  };
+
   let result;
 
   try {
-    result = await got.post('https://call2fa.rikkicom.net/call_api/call', {
-      headers: {
-        'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
-        'Content-Type': 'application/json'
-      },
-      json: raw,
-      responseType: 'json'
-    }).json();
+    result = await fetch('https://call2fa.rikkicom.net/call_api/call', requestOptions);
 
     res.status(200);
     res.send(result);
   } catch (err) {
-    res.sendStatus(400);
+    res.status(400);
+    res.send({
+      message: 'something went wrong while call'
+    })
   }
 });
 
