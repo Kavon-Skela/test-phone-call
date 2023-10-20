@@ -1,6 +1,5 @@
 import express, { json } from "express";
 import { config } from 'dotenv';
-import { join } from 'path';
 import got from 'got';
 
 config();
@@ -51,8 +50,7 @@ server.post('/auth', async(req, res) => {
 });
 
 server.post('/phoneConfirmed', async(req, res) => {
-  const dataPath = join(__dirname, 'clientBase.json');
-  const rawData = fs.readFileSync(dataPath, 'utf-8');
+  const rawData = fs.readFileSync('clientBase.json', 'utf-8');
   const jsonData = JSON.parse(rawData);
 
   jsonData.clients.push(req.body);
@@ -65,8 +63,7 @@ server.post('/phoneConfirmed', async(req, res) => {
 server.post('/phoneCheck', (req, res) => {
   const { call_id } = req.body;
 
-  const dataPath = join(__dirname, 'clientBase.json');
-  const rawData = fs.readFileSync(dataPath, 'utf-8');
+  const rawData = fs.readFileSync('clientBase.json', 'utf-8');
   const jsonData = JSON.parse(rawData);
   let checker = false;
 
