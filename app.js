@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import { config } from 'dotenv';
 import got from 'got';
+import fs from 'fs';
 
 config();
 
