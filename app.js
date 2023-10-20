@@ -19,19 +19,10 @@ server.get('/', (req, res) => {
   );
 });
 
-server.post('/auth', async(req, res) => {
+server.post('/auth', (req, res) => {
   const { phone_number } = req.body;
 
-  if (!phone_number) {
-    res.sendStatus(400);
-  }
-
-  const headers = {
-    'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
-    'Content-Type': 'application/json'
-  }
-
-  const raw = {
+  const raw = JSON.stringify({
     'phone_number': phone_number,
     'options': {
       'number_length': null,
@@ -39,15 +30,25 @@ server.post('/auth', async(req, res) => {
       'callback_url': 'https://product-catalog-be-s8k7.onrender.com/phoneConfirmed',
       'callback_key': null,
     },
-  };
-
-  const result = await got.post('https://call2fa.rikkicom.net/call_api/call', {
-    headers,
-    body: raw
   });
 
-  res.status(200);
-  res.send(result);
+  let result;
+
+  try {
+    result = got.post('https://call2fa.rikkicom.net/call_api/call', {
+      headers: {
+        'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
+        'Content-Type': 'application/json'
+      },
+      body: raw,
+      responseType: 'json'
+    });
+    
+    res.status(200);
+    res.send(result);
+  } catch (err) {
+    res.sendStatus(400);
+  }
 });
 
 server.post('/phoneConfirmed', async(req, res) => {
