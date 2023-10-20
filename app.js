@@ -19,7 +19,7 @@ server.get('/', (req, res) => {
   );
 });
 
-server.post('/auth', (req, res) => {
+server.post('/auth', async(req, res) => {
   const { phone_number } = req.body;
 
   const raw = JSON.stringify({
@@ -35,7 +35,7 @@ server.post('/auth', (req, res) => {
   let result;
 
   try {
-    result = got.post('https://call2fa.rikkicom.net/call_api/call', {
+    result = await got.post('https://call2fa.rikkicom.net/call_api/call', {
       headers: {
         'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
         'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ server.post('/auth', (req, res) => {
       body: raw,
       responseType: 'json'
     }).json();
-    
+
     res.status(200);
     res.send(result);
   } catch (err) {
