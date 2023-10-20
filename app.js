@@ -1,14 +1,14 @@
-import express from "express";
-import dotenv from 'dotenv';
-import path from 'path';
+import express, { json } from "express";
+import { config } from 'dotenv';
+import { join } from 'path';
 
-dotenv.config();
+config();
 
 const PORT = process.env.PORT || 3000;
 
 const server = express();
 
-server.use(express.json());
+server.use(json());
 
 server.get('/', (req, res) => {
   res.send(
@@ -50,7 +50,7 @@ server.post('/auth', async(req, res) => {
 });
 
 server.post('/phoneConfirmed', async(req, res) => {
-  const dataPath = path.join(__dirname, 'clientBase.json');
+  const dataPath = join(__dirname, 'clientBase.json');
   const rawData = fs.readFileSync(dataPath, 'utf-8');
   const jsonData = JSON.parse(rawData);
 
@@ -64,7 +64,7 @@ server.post('/phoneConfirmed', async(req, res) => {
 server.post('/phoneCheck', (req, res) => {
   const { call_id } = req.body;
 
-  const dataPath = path.join(__dirname, 'clientBase.json');
+  const dataPath = join(__dirname, 'clientBase.json');
   const rawData = fs.readFileSync(dataPath, 'utf-8');
   const jsonData = JSON.parse(rawData);
   let checker = false;
