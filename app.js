@@ -27,7 +27,7 @@ server.post('/auth', (req, res) => {
     'options': {
       'number_length': null,
       'send_result': true,
-      'callback_url': 'https://product-catalog-be-s8k7.onrender.com/phoneConfirmed',
+      'callback_url': 'https://test-phone-call-production.up.railway.app/phoneConfirmed',
       'callback_key': null,
     },
   });
@@ -42,7 +42,7 @@ server.post('/auth', (req, res) => {
       },
       body: raw,
       responseType: 'json'
-    });
+    }).json();
     
     res.status(200);
     res.send(result);
