@@ -1,6 +1,7 @@
 import express, { json } from "express";
 import { config } from 'dotenv';
 import { join } from 'path';
+import { post } from 'got';
 
 config();
 
@@ -40,7 +41,7 @@ server.post('/auth', async(req, res) => {
     },
   };
 
-  const result = await got.post('https://call2fa.rikkicom.net/call_api/call', {
+  const result = await post('https://call2fa.rikkicom.net/call_api/call', {
     headers,
     body: raw
   });
