@@ -38,7 +38,7 @@ server.post('/auth', async(req, res) => {
       'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
       'Content-Type': 'application/json'
     },
-    body: raw,
+    data: raw,
     redirect: 'follow'
   };
 
