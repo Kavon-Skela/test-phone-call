@@ -2,12 +2,15 @@ import express, { json } from "express";
 import { config } from 'dotenv';
 import axios from "axios";
 import fs from 'fs';
+import cors from 'cors';
 
 config();
 
 const PORT = process.env.PORT || 3000;
 
 const server = express();
+
+server.use(cors());
 
 server.use(json());
 
@@ -44,9 +47,10 @@ server.post('/auth', async(req, res) => {
 
   let result;
   
-
   try {
-    result = (await axios(requestOptions)).data;
+    result = (await axios(requestOptions));
+
+    console.log(result);
 
     res.status(200);
     res.send(result);
