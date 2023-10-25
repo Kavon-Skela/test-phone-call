@@ -45,21 +45,12 @@ server.post('/auth', async(req, res) => {
     data: raw
   };
 
-  let result;
-  
-  try {
-    result = (await axios(requestOptions));
+  let result = await axios(requestOptions);
 
-    console.log(result);
+  console.log(result);
 
-    res.status(200);
-    res.send(result);
-  } catch (err) {
-    res.status(400);
-    res.send({
-      message: 'something went wrong while call'
-    })
-  }
+  res.status(200);
+  res.send(result);
 });
 
 server.post('/phoneConfirmed', async(req, res) => {
