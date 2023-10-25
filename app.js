@@ -26,18 +26,10 @@ server.post('/auth', async(req, res) => {
   const { phone_number } = req.body;
 
   const raw = JSON.stringify({
-    'phone_number': phone_number,
-    'options': {
-      'number_length': null,
-      'send_result': true,
-      'callback_url': 'https://test-phone-call-production.up.railway.app/phoneConfirmed',
-      'callback_key': null,
-    },
+    'phone_number': phone_number
   });
 
   const requestOptions = {
-    method: 'POST',
-    url: 'https://call2fa.rikkicom.net/call_api/call',
     headers: {
       'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
       'Content-Type': 'application/json'
@@ -45,7 +37,7 @@ server.post('/auth', async(req, res) => {
     data: raw
   };
 
-  let result = await axios(requestOptions);
+  let result = await axios.post('https://call2fa.rikkicom.net/call_api/call', requestOptions);
 
   console.log(result);
 
