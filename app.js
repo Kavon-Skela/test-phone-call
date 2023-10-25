@@ -1,6 +1,6 @@
 import express, { json } from "express";
 import { config } from 'dotenv';
-import got from "got";
+import axios from "axios";
 import fs from 'fs';
 
 config();
@@ -22,50 +22,40 @@ server.get('/', (req, res) => {
 server.post('/auth', async(req, res) => {
   const { phone_number } = req.body;
 
-  // const raw = JSON.stringify({
-  //   'phone_number': phone_number,
-  //   'options': {
-  //     'number_length': null,
-  //     'send_result': true,
-  //     'callback_url': 'https://test-phone-call-production.up.railway.app/phoneConfirmed',
-  //     'callback_key': null,
-  //   },
-  // });
-
-  // const requestOptions = {
-  //   method: 'POST',
-  //   headers: {
-  //     'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
-  //     'Content-Type': 'application/json'
-  //   },
-  //   data: raw,
-  //   redirect: 'follow'
-  // };
-
-  // let result;
-
-  // try {
-  //   result = (await fetch('https://call2fa.rikkicom.net/call_api/call', requestOptions)).json();
-
-  //   res.status(200);
-  //   res.send(result);
-  // } catch (err) {
-  //   res.status(400);
-  //   res.send({
-  //     message: 'something went wrong while call'
-  //   })
-  // }
+  const raw = JSON.stringify({
+    'phone_number': phone_number,
+    'options': {
+      'number_length': null,
+      'send_result': true,
+      'callback_url': 'https://test-phone-call-production.up.railway.app/phoneConfirmed',
+      'callback_key': null,
+    },
+  });
 
   const requestOptions = {
+    method: 'POST',
+    url: 'https://call2fa.rikkicom.net/call_api/call',
     headers: {
       'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
+      'Content-Type': 'application/json'
     },
-    json: { phone_number }
+    data: raw
   };
 
-  const result = await got.post('https://call2fa.rikkicom.net/call_api/call', requestOptions);
+  let result;
+  
 
-  res.send(result);
+  try {
+    result = (await axios(requestOptions)).data;
+
+    res.status(200);
+    res.send(result);
+  } catch (err) {
+    res.status(400);
+    res.send({
+      message: 'something went wrong while call'
+    })
+  }
 });
 
 server.post('/phoneConfirmed', async(req, res) => {
