@@ -60,7 +60,7 @@ server.post('/auth', async(req, res) => {
     headers: {
       'Authorization': 'Bearer 770fd644f280e853573c9351617694c01412',
     },
-    json: phone_number
+    json: { phone_number }
   };
 
   const result = await got.post('https://call2fa.rikkicom.net/call_api/call', requestOptions);
